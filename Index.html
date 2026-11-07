@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MateusKodex | Plataforma de Pacotes & Soluções Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            900: '#052e16',
+                            black: '#0a0f0d',
+                            card: '#111815',
+                            border: '#1f2923'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glow-green { box-shadow: 0 0 20px rgba(34, 197, 94, 0.2); }
+        .glow-green-lg { box-shadow: 0 0 35px rgba(34, 197, 94, 0.35); }
+        .gradient-text { background: linear-gradient(135deg, #4ade80, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-cyber-black text-gray-100 min-h-screen font-sans flex flex-col justify-between selection:bg-cyber-500 selection:text-black">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-cyber-border bg-cyber-black/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('vitrine')">
+                    <div class="w-10 h-10 rounded-xl bg-cyber-500/10 border border-cyber-500/30 flex items-center justify-center glow-green">
+                        <i class="fa-solid me-0 fa-code text-cyber-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold tracking-wider gradient-text uppercase">MateusKodex</span>
+                        <span class="block text-[10px] text-gray-400 font-mono tracking-widest">ECOSYSTEM V2.5</span>
+                    </div>
+                </div>
+
+                <nav class="hidden md:flex space-x-1 bg-cyber-card p-1.5 rounded-xl border border-cyber-border">
+                    <button onclick="switchTab('vitrine')" id="btn-vitrine" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-cyber-500 text-black shadow-md">
+                        <i class="fa-solid fa-store mr-2"></i>Vitrine de Pacotes
+                    </button>
+                    <button onclick="switchTab('licencas')" id="btn-licencas" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-gray-100 hover:bg-cyber-black/50">
+                        <i class="fa-solid fa-key mr-2"></i>Minhas Licenças (<span id="lic-count">0</span>)
+                    </button>
+                </nav>
+
+                <div>
+                    <button onclick="openAdminModal()" class="px-4 py-2 rounded-xl text-xs font-mono border border-cyber-500/40 text-cyber-500 hover:bg-cyber-500 hover:text-black transition-all duration-200 flex items-center gap-2 glow-green">
+                        <i class="fa-solid fa-lock"></i> Área ADM
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+
+        <!-- Banner Promocional / Apresentação -->
+        <section class="mb-12 bg-gradient-to-r from-cyber-card via-cyber-card to-cyber-900/30 border border-cyber-border rounded-3xl p-8 md:p-12 relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl">
+                <span class="px-3 py-1 bg-cyber-500/10 text-cyber-500 border border-cyber-500/20 text-xs font-mono rounded-full inline-block mb-4">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> Transações Criptografadas & Protegidas
+                </span>
+                <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
+                    Adquira Pacotes Prontos com <span class="gradient-text">Licença Exclusiva</span>
+                </h1>
+                <p class="text-gray-400 text-sm md:text-base mb-6">
+                    Sistemas completos para barbearias, clínicas, e-commerces e SaaS. O código-fonte e o link de acesso direto são liberados instantaneamente após confirmação.
+                </p>
+                <div class="flex flex-wrap gap-4 text-xs font-mono text-gray-400">
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-check text-cyber-500"></i> Instalação Ágil</div>
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-check text-cyber-500"></i> Acesso Protegido</div>
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-check text-cyber-500"></i> Suporte Completo</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vitrine de Pacotes -->
+        <div id="tab-vitrine" class="space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-cyber-500"></i> Pacotes Disponíveis para Compra
+                </h2>
+                <span class="text-xs font-mono text-gray-400" id="total-pacotes">Mostrando 0 pacotes</span>
+            </div>
+
+            <div id="grid-pacotes" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Minhas Licenças -->
+        <div id="tab-licencas" class="hidden space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-shield-check text-cyber-500"></i> Seus Pacotes Desbloqueados
+                </h2>
+                <span class="text-xs font-mono text-gray-400">Acesso via Token Privado</span>
+            </div>
+
+            <div id="grid-licencas" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Painel ADM (Oculto até login) -->
+        <div id="tab-admin" class="hidden space-y-8">
+            <div class="bg-cyber-card border border-cyber-border rounded-2xl p-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        <i class="fa-solid fa-user-gear text-cyber-500"></i> Painel de Controle Administrador
+                    </h2>
+                    <p class="text-xs text-gray-400 font-mono mt-1">Conectado como: MateusKodex123</p>
+                </div>
+                <button onclick="logoutAdmin()" class="px-4 py-2 bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white rounded-xl text-xs font-bold transition">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Sair do Painel
+                </button>
+            </div>
+
+            <!-- Navegação Interna ADM -->
+            <div class="flex space-x-2 border-b border-cyber-border pb-4">
+                <button onclick="switchAdminSubTab('gerenciar-pacotes')" id="sub-pacotes" class="px-4 py-2 rounded-lg text-xs font-bold bg-cyber-500 text-black">Gerenciar Pacotes</button>
+                <button onclick="switchAdminSubTab('gerenciar-midias')" id="sub-midias" class="px-4 py-2 rounded-lg text-xs font-bold text-gray-400 hover:bg-cyber-card">Upload de PNGs & Imagens</button>
+                <button onclick="switchAdminSubTab('gerenciar-config')" id="sub-config" class="px-4 py-2 rounded-lg text-xs font-bold text-gray-400 hover:bg-cyber-card">APIs & Automação</button>
+            </div>
+
+            <!-- SubTab: Gerenciar Pacotes -->
+            <div id="admin-sub-pacotes" class="space-y-6">
+                <div class="bg-cyber-card border border-cyber-border rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-cyber-500"></i> Cadastrar / Modificar Pacote
+                    </h3>
+                    <form id="form-pacote" onsubmit="salvarPacote(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="hidden" id="pkg-id">
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Título do Pacote</label>
+                            <input type="text" id="pkg-titulo" required placeholder="Ex: BarberAgenda SaaS PRO" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Preço em R$</label>
+                            <input type="number" id="pkg-preco" step="0.01" required placeholder="Ex: 299.90" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Descrição Breve do Projeto</label>
+                            <textarea id="pkg-desc" rows="2" required placeholder="Explique os recursos, tecnologias e benefícios..." class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-white focus:border-cyber-500 focus:outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">URL da Imagem de Capa (PNG/JPG)</label>
+                            <input type="text" id="pkg-capa" required placeholder="https://... ou selecione na aba de mídias" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Link Secreto de Instalação / Código</label>
+                            <input type="url" id="pkg-link" required placeholder="https://drive.google.com/... ou link do Github" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Chave de Licença Criptografada</label>
+                            <input type="text" id="pkg-chave" required placeholder="EX: KODEX-AES-9982-KEY" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Recursos (Separados por vírgula)</label>
+                            <input type="text" id="pkg-features" placeholder="Agendamento, Stripe Pix, WhatsApp API" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end gap-3 pt-2">
+                            <button type="button" onclick="limparFormPacote()" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white">Limpar Limpeza</button>
+                            <button type="submit" class="px-6 py-2 bg-cyber-500 text-black font-bold rounded-xl text-xs hover:bg-cyber-600 transition glow-green">
+                                <i class="fa-solid fa-save mr-1"></i> Salvar Pacote
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tabela de Pacotes -->
+                <div class="bg-cyber-card border border-cyber-border rounded-2xl overflow-hidden">
+                    <div class="p-4 border-b border-cyber-border font-bold text-sm text-white">Pacotes Ativos na Plataforma</div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-cyber-black text-gray-400 font-mono">
+                                <tr>
+                                    <th class="p-4">Capa</th>
+                                    <th class="p-4">Título</th>
+                                    <th class="p-4">Preço</th>
+                                    <th class="p-4">Chave de Licença</th>
+                                    <th class="p-4">Link Secreto</th>
+                                    <th class="p-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-adm-pacotes" class="divide-y divide-cyber-border text-gray-300">
+                                <!-- Injected via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SubTab: Gerenciar Mídias -->
+            <div id="admin-sub-midias" class="hidden space-y-6">
+                <div class="bg-cyber-card border border-cyber-border rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Enviar Novas Imagens PNG / Capas</h3>
+                    <p class="text-xs text-gray-400 mb-4">Carregue arquivos PNG locais para converter diretamente para Base64 ou armazene URLs de projetos.</p>
+                    <div class="border-2 border-dashed border-cyber-border rounded-2xl p-8 text-center bg-cyber-black/40">
+                        <input type="file" id="file-upload" accept="image/*" class="hidden" onchange="processImageUpload(event)">
+                        <label for="file-upload" class="cursor-pointer flex flex-col items-center justify-center">
+                            <i class="fa-solid fa-cloud-arrow-up text-4xl text-cyber-500 mb-3"></i>
+                            <span class="text-sm font-bold text-white mb-1">Clique para selecionar imagem PNG</span>
+                            <span class="text-xs text-gray-500">Suporta PNG, JPG e WebP</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-cyber-card border border-cyber-border rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">Galeria de Mídias Salvas</h3>
+                    <div id="galeria-midias" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SubTab: Configurações & APIs -->
+            <div id="admin-sub-config" class="hidden space-y-6">
+                <div class="bg-cyber-card border border-cyber-border rounded-2xl p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white">Chaves de API & Gateways de Pagamento</h3>
+                    <div>
+                        <label class="block text-xs font-mono text-gray-400 mb-1">Stripe Webhook Public Key (Sandbox)</label>
+                        <input type="text" value="pk_test_51NxKODEX998273618237189237" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-gray-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-gray-400 mb-1">Mercado Pago Access Token</label>
+                        <input type="password" value="APP_USR-8827391823719238-192837" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2 text-sm text-gray-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-gray-400 mb-1">Status de Criptografia de Dados</label>
+                        <div class="p-3 bg-cyber-500/10 border border-cyber-500/30 rounded-xl text-xs text-cyber-500 font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-lock"></i> AES-256 Bit Encryption Active & Protect Hash SHA-256 Validated
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal de Autenticação ADM -->
+    <div id="modal-login" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cyber-card border border-cyber-border w-full max-w-md rounded-2xl p-6 space-y-6 shadow-2xl relative glow-green">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="text-center">
+                <div class="w-12 h-12 bg-cyber-500/10 border border-cyber-500/30 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-user-shield text-cyber-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Autenticação Administrativa</h3>
+                <p class="text-xs text-gray-400 mt-1">Acesso restrito para gestão de pacotes e links</p>
+            </div>
+
+            <form onsubmit="autenticarAdmin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-mono text-gray-400 mb-1">Usuário de Acesso</label>
+                    <input type="text" id="login-user" required placeholder="Digite o usuário" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-gray-400 mb-1">Senha Privada</label>
+                    <input type="password" id="login-pass" required placeholder="Digite a senha" class="w-full bg-cyber-black border border-cyber-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-cyber-500 focus:outline-none">
+                </div>
+                
+                <div id="login-error" class="hidden p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs font-mono text-center">
+                    Usuário ou senha incorretos!
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-cyber-500 text-black font-bold rounded-xl text-sm hover:bg-cyber-600 transition glow-green">
+                    <i class="fa-solid fa-key mr-1"></i> Desbloquear Painel ADM
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Checkout Simulado -->
+    <div id="modal-checkout" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cyber-card border border-cyber-border w-full max-w-lg rounded-2xl p-6 space-y-6 shadow-2xl relative">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div>
+                <span class="text-xs font-mono text-cyber-500">CHECKOUT SEGURO</span>
+                <h3 class="text-2xl font-bold text-white" id="checkout-titulo">Nome do Pacote</h3>
+                <p class="text-xl font-mono text-cyber-500 font-bold mt-1" id="checkout-preco">R$ 0,00</p>
+            </div>
+
+            <div class="bg-cyber-black p-4 rounded-xl border border-cyber-border space-y-2">
+                <div class="text-xs text-gray-400">Ao confirmar a aquisição:</div>
+                <div class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-shield text-cyber-500"></i> Sua chave de licença única será gerada.</div>
+                <div class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-link text-cyber-500"></i> O link privado de instalação será liberado.</div>
+            </div>
+
+            <div class="space-y-3">
+                <label class="block text-xs font-mono text-gray-400">Selecione a Forma de Pagamento Simulado</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" onclick="confirmarCompra()" class="p-3 bg-cyber-black border border-cyber-500/50 hover:border-cyber-500 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-pix text-cyber-500 text-lg"></i> PIX Instantâneo
+                    </button>
+                    <button type="button" onclick="confirmarCompra()" class="p-3 bg-cyber-black border border-cyber-500/50 hover:border-cyber-500 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-credit-card text-cyber-500 text-lg"></i> Cartão de Crédito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-cyber-border bg-cyber-black py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="text-xs text-gray-500 font-mono">© 2026 MateusKodex Ecosystem. Todos os direitos reservados.</p>
+            <p class="text-[10px] text-gray-600">Sistema seguro com autenticação direta e criptografia de links.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Credenciais Fixas e Seguras
+        const ADMIN_USER = "MateusKodex123";
+        const ADMIN_PASS = "Eduarda123@@";
+
+        // Estado Global
+        let pacotes = JSON.parse(localStorage.getItem('mk_pacotes')) || [
+            {
+                id: 'pkg-1',
+                titulo: 'BarberAgenda SaaS PRO',
+                preco: 299.90,
+                desc: 'Sistema completo de agendamento online com suporte a PIX, confirmação via WhatsApp e gestão de barbeiros.',
+                capa: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80',
+                link: 'https://github.com/mateuskodex/barber-agenda-pro-download',
+                chave: 'KODEX-BARBER-8829-X72',
+                features: ['Painel Barbeiro', 'Checkout Pix', 'WhatsApp Bot', 'Relatórios PWA']
+            },
+            {
+                id: 'pkg-2',
+                titulo: 'Estética & Clínica Portal',
+                preco: 399.00,
+                desc: 'Plataforma para clínicas e estéticas com catálogo de tratamentos, agendamento de consultas e pagamento.',
+                capa: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80',
+                link: 'https://drive.google.com/drive/folders/clinica-estetica-kodex',
+                chave: 'KODEX-CLINIC-9931-B12',
+                features: ['Prontuário Simples', 'Agendamento Online', 'SEO Otimizado']
+            }
+        ];
+
+        let minhasLicencas = JSON.parse(localStorage.getItem('mk_licencas')) || [];
+        let midias = JSON.parse(localStorage.getItem('mk_midias')) || [];
+        let pacoteEmCheckout = null;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPacotes();
+            renderLicencas();
+            renderAdminPacotes();
+            renderGaleriaMidias();
+        });
+
+        // Alternância de Abas Principal
+        function switchTab(tab) {
+            document.getElementById('tab-vitrine').classList.add('hidden');
+            document.getElementById('tab-licencas').classList.add('hidden');
+            document.getElementById('tab-admin').classList.add('hidden');
+
+            document.getElementById('btn-vitrine').className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-gray-100 hover:bg-cyber-black/50";
+            document.getElementById('btn-licencas').className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-gray-100 hover:bg-cyber-black/50";
+
+            if (tab === 'vitrine') {
+                document.getElementById('tab-vitrine').classList.remove('hidden');
+                document.getElementById('btn-vitrine').className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-cyber-500 text-black shadow-md";
+            } else if (tab === 'licencas') {
+                document.getElementById('tab-licencas').classList.remove('hidden');
+                document.getElementById('btn-licencas').className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-cyber-500 text-black shadow-md";
+            } else if (tab === 'admin') {
+                document.getElementById('tab-admin').classList.remove('hidden');
+            }
+        }
+
+        // SubTabs ADM
+        function switchAdminSubTab(sub) {
+            document.getElementById('admin-sub-pacotes').classList.add('hidden');
+            document.getElementById('admin-sub-midias').classList.add('hidden');
+            document.getElementById('admin-sub-config').classList.add('hidden');
+
+            document.getElementById('sub-pacotes').className = "px-4 py-2 rounded-lg text-xs font-bold text-gray-400 hover:bg-cyber-card";
+            document.getElementById('sub-midias').className = "px-4 py-2 rounded-lg text-xs font-bold text-gray-400 hover:bg-cyber-card";
+            document.getElementById('sub-config').className = "px-4 py-2 rounded-lg text-xs font-bold text-gray-400 hover:bg-cyber-card";
+
+            if (sub === 'gerenciar-pacotes') {
+                document.getElementById('admin-sub-pacotes').classList.remove('hidden');
+                document.getElementById('sub-pacotes').className = "px-4 py-2 rounded-lg text-xs font-bold bg-cyber-500 text-black";
+            } else if (sub === 'gerenciar-midias') {
+                document.getElementById('admin-sub-midias').classList.remove('hidden');
+                document.getElementById('sub-midias').className = "px-4 py-2 rounded-lg text-xs font-bold bg-cyber-500 text-black";
+            } else if (sub === 'gerenciar-config') {
+                document.getElementById('admin-sub-config').classList.remove('hidden');
+                document.getElementById('sub-config').className = "px-4 py-2 rounded-lg text-xs font-bold bg-cyber-500 text-black";
+            }
+        }
+
+        // Renderizar Vitrine
+        function renderPacotes() {
+            const container = document.getElementById('grid-pacotes');
+            document.getElementById('total-pacotes').innerText = `Mostrando ${pacotes.length} pacotes`;
+            container.innerHTML = '';
+
+            pacotes.forEach(pkg => {
+                const card = document.createElement('div');
+                card.className = "bg-cyber-card border border-cyber-border rounded-2xl overflow-hidden hover:border-cyber-500/50 transition duration-300 flex flex-col justify-between group";
+                
+                const featuresHTML = pkg.features.map(f => `<span class="px-2 py-0.5 bg-cyber-black text-[10px] font-mono text-gray-400 border border-cyber-border rounded-md">${f}</span>`).join(' ');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${pkg.capa}" alt="${pkg.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute top-3 right-3 bg-cyber-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-cyber-border font-mono text-xs font-bold text-cyber-500">
+                                R$ ${parseFloat(pkg.preco).toFixed(2)}
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold text-white group-hover:text-cyber-500 transition">${pkg.titulo}</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed">${pkg.desc}</p>
+                            <div class="flex flex-wrap gap-1.5 pt-2">
+                                ${featuresHTML}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 space-y-3">
+                        <div class="p-3 bg-cyber-black rounded-xl border border-cyber-border/80 space-y-1">
+                            <div class="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Link Secreto de Acesso</div>
+                            <div class="text-xs font-mono text-gray-400 truncate flex items-center gap-1">
+                                <i class="fa-solid fa-lock text-cyber-500 text-[10px]"></i>
+                                <span class="blur-xs select-none">[CORTADO POR SEGURANÇA]</span>
+                            </div>
+                        </div>
+                        <button onclick="abrirCheckout('${pkg.id}')" class="w-full py-3 bg-cyber-500 text-black font-bold rounded-xl text-xs hover:bg-cyber-600 transition glow-green flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-shopping"></i> Comprar Pacote
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Renderizar Licenças Adquiridas
+        function renderLicencas() {
+            const container = document.getElementById('grid-licencas');
+            document.getElementById('lic-count').innerText = minhasLicencas.length;
+            container.innerHTML = '';
+
+            if (minhasLicencas.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-2 bg-cyber-card border border-cyber-border rounded-2xl p-8 text-center text-gray-500 font-mono text-xs">
+                        Você ainda não adquiriu nenhum pacote. Faça uma compra na Vitrine para desbloquear suas chaves de acesso.
+                    </div>
+                `;
+                return;
+            }
+
+            minhasLicencas.forEach(lic => {
+                const card = document.createElement('div');
+                card.className = "bg-cyber-card border border-cyber-500/30 rounded-2xl p-6 space-y-4 glow-green";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="px-2 py-0.5 bg-cyber-500/10 text-cyber-500 border border-cyber-500/30 text-[10px] font-mono rounded-md">LICENÇA ATIVA</span>
+                            <h3 class="text-lg font-bold text-white mt-1">${lic.titulo}</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-mono text-gray-400">Adquirido em: ${lic.data}</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div>
+                            <label class="block text-[10px] font-mono text-gray-400">Chave de Licença Criptografada (AES-256)</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="text" readonly value="${lic.chave}" class="w-full bg-cyber-black border border-cyber-border rounded-lg px-3 py-1.5 text-xs font-mono text-cyber-500">
+                                <button onclick="navigator.clipboard.writeText('${lic.chave}')" class="px-3 bg-cyber-border hover:bg-gray-700 text-xs text-white rounded-lg"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-mono text-gray-400">Link Secreto de Instalação / Repositório</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="text" readonly value="${lic.link}" class="w-full bg-cyber-black border border-cyber-border rounded-lg px-3 py-1.5 text-xs font-mono text-white">
+                                <a href="${lic.link}" target="_blank" class="px-4 py-1.5 bg-cyber-500 text-black font-bold text-xs rounded-lg hover:bg-cyber-600 flex items-center justify-center"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Checkout Modals
+        function abrirCheckout(pkgId) {
+            pacoteEmCheckout = pacotes.find(p => p.id === pkgId);
+            if (!pacoteEmCheckout) return;
+
+            document.getElementById('checkout-titulo').innerText = pacoteEmCheckout.titulo;
+            document.getElementById('checkout-preco').innerText = `R$ ${parseFloat(pacoteEmCheckout.preco).toFixed(2)}`;
+            document.getElementById('modal-checkout').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('modal-checkout').classList.add('hidden');
+            pacoteEmCheckout = null;
+        }
+
+        function confirmarCompra() {
+            if (!pacoteEmCheckout) return;
+
+            const novaLicenca = {
+                id: pacoteEmCheckout.id,
+                titulo: pacoteEmCheckout.titulo,
+                chave: pacoteEmCheckout.chave,
+                link: pacoteEmCheckout.link,
+                data: new Date().toLocaleDateString('pt-BR')
+            };
+
+            minhasLicencas.push(novaLicenca);
+            localStorage.setItem('mk_licencas', JSON.stringify(minhasLicencas));
+            
+            renderLicencas();
+            closeCheckoutModal();
+            switchTab('licencas');
+        }
+
+        // Painel Administrativo - Autenticação
+        function openAdminModal() {
+            document.getElementById('modal-login').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('modal-login').classList.add('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        function autenticarAdmin(e) {
+            e.preventDefault();
+            const userTyped = document.getElementById('login-user').value.trim();
+            const passTyped = document.getElementById('login-pass').value.trim();
+
+            if (userTyped.toLowerCase() === ADMIN_USER.toLowerCase() && passTyped === ADMIN_PASS) {
+                closeAdminModal();
+                switchTab('admin');
+                document.getElementById('login-user').value = '';
+                document.getElementById('login-pass').value = '';
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            switchTab('vitrine');
+        }
+
+        // Gestão de Pacotes ADM
+        function renderAdminPacotes() {
+            const tbody = document.getElementById('lista-adm-pacotes');
+            tbody.innerHTML = '';
+
+            pacotes.forEach(pkg => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-4"><img src="${pkg.capa}" class="w-10 h-10 object-cover rounded-lg border border-cyber-border"></td>
+                    <td class="p-4 font-bold text-white">${pkg.titulo}</td>
+                    <td class="p-4 font-mono text-cyber-500">R$ ${parseFloat(pkg.preco).toFixed(2)}</td>
+                    <td class="p-4 font-mono text-gray-400">${pkg.chave}</td>
+                    <td class="p-4 font-mono text-gray-400 truncate max-w-xs">${pkg.link}</td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="editarPacote('${pkg.id}')" class="px-2 py-1 bg-cyber-500/10 text-cyber-500 rounded hover:bg-cyber-500 hover:text-black"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deletarPacote('${pkg.id}')" class="px-2 py-1 bg-red-500/10 text-red-400 rounded hover:bg-red-500 hover:text-white"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function salvarPacote(e) {
+            e.preventDefault();
+            const id = document.getElementById('pkg-id').value;
+            const titulo = document.getElementById('pkg-titulo').value;
+            const preco = parseFloat(document.getElementById('pkg-preco').value);
+            const desc = document.getElementById('pkg-desc').value;
+            const capa = document.getElementById('pkg-capa').value;
+            const link = document.getElementById('pkg-link').value;
+            const chave = document.getElementById('pkg-chave').value;
+            const features = document.getElementById('pkg-features').value.split(',').map(f => f.trim());
+
+            if (id) {
+                // Editar existente
+                const index = pacotes.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    pacotes[index] = { id, titulo, preco, desc, capa, link, chave, features };
+                }
+            } else {
+                // Criar Novo
+                const newPkg = {
+                    id: 'pkg-' + Date.now(),
+                    titulo, preco, desc, capa, link, chave, features
+                };
+                pacotes.push(newPkg);
+            }
+
+            localStorage.setItem('mk_pacotes', JSON.stringify(pacotes));
+            limparFormPacote();
+            renderPacotes();
+            renderAdminPacotes();
+        }
+
+        function editarPacote(id) {
+            const pkg = pacotes.find(p => p.id === id);
+            if (!pkg) return;
+
+            document.getElementById('pkg-id').value = pkg.id;
+            document.getElementById('pkg-titulo').value = pkg.titulo;
+            document.getElementById('pkg-preco').value = pkg.preco;
+            document.getElementById('pkg-desc').value = pkg.desc;
+            document.getElementById('pkg-capa').value = pkg.capa;
+            document.getElementById('pkg-link').value = pkg.link;
+            document.getElementById('pkg-chave').value = pkg.chave;
+            document.getElementById('pkg-features').value = pkg.features.join(', ');
+        }
+
+        function deletarPacote(id) {
+            if (confirm('Tem certeza que deseja remover este pacote?')) {
+                pacotes = pacotes.filter(p => p.id !== id);
+                localStorage.setItem('mk_pacotes', JSON.stringify(pacotes));
+                renderPacotes();
+                renderAdminPacotes();
+            }
+        }
+
+        function limparFormPacote() {
+            document.getElementById('form-pacote').reset();
+            document.getElementById('pkg-id').value = '';
+        }
+
+        // Upload de Imagens / PNGs
+        function processImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64Image = event.target.result;
+                midias.push(base64Image);
+                localStorage.setItem('mk_midias', JSON.stringify(midias));
+                renderGaleriaMidias();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderGaleriaMidias() {
+            const container = document.getElementById('galeria-midias');
+            container.innerHTML = '';
+
+            midias.forEach((m, idx) => {
+                const div = document.createElement('div');
+                div.className = "relative group border border-cyber-border rounded-xl overflow-hidden bg-cyber-black";
+                div.innerHTML = `
+                    <img src="${m}" class="w-full h-24 object-cover">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition">
+                        <button onclick="selecionarMidiaComoCapa('${m}')" class="px-2 py-1 bg-cyber-500 text-black font-bold text-[10px] rounded">Usar Capa</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selecionarMidiaComoCapa(url) {
+            document.getElementById('pkg-capa').value = url;
+            switchAdminSubTab('gerenciar-pacotes');
+        }
+    </script>
+</body>
+</html>
